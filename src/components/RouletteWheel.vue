@@ -146,7 +146,7 @@ const spin = () => {
   height: 0;
   border-left: 20px solid transparent;
   border-right: 20px solid transparent;
-  border-top: 40px solid #333;
+  border-top: 40px solid #FFD700;
   z-index: 10;
 }
 

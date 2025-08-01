@@ -22,6 +22,7 @@ import RouletteWheel from './components/RouletteWheel.vue'
 h1 {
   font-size: 2.5em;
   margin-bottom: 30px;
-  color: #333;
+  color: #FFD700;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 </style>
