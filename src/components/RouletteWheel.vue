@@ -39,9 +39,12 @@
         rows="10"
         cols="30"
       ></textarea>
-      <button @click="spin" :disabled="isSpinning || items.length === 0">
+      <button @click="spin" :disabled="isSpinning || items.length < 2">
         {{ isSpinning ? '轉動中...' : '開始轉動' }}
       </button>
+      <p v-if="items.length < 2" class="warning">
+        請至少輸入兩個選項
+      </p>
     </div>
   </div>
 </template>
@@ -106,7 +109,10 @@ const getTextRotation = (index) => {
 }
 
 const spin = () => {
-  if (items.value.length === 0) return
+  if (items.value.length < 2) {
+    alert('請至少輸入兩個選項才能開始轉動！')
+    return
+  }
   
   isSpinning.value = true
   const spins = 5 + Math.random() * 5
@@ -192,5 +198,11 @@ button:hover:not(:disabled) {
 button:disabled {
   background-color: #cccccc;
   cursor: not-allowed;
+}
+
+.warning {
+  color: #ff6b6b;
+  font-size: 14px;
+  margin-top: 10px;
 }
 </style>
