@@ -14,9 +14,15 @@
           <path
             :d="getPath(index)"
             :fill="getColor(index)"
+            :fill-opacity="hoveredIndex === index ? 0.8 : 1"
             stroke="white"
             stroke-width="2"
-          />
+            @mouseenter="hoveredIndex = index"
+            @mouseleave="hoveredIndex = null"
+            style="cursor: pointer;"
+          >
+            <title>{{ item }}</title>
+          </path>
           <text
             :x="getTextX(index)"
             :y="getTextY(index)"
@@ -46,6 +52,9 @@
         請至少輸入兩個選項
       </p>
     </div>
+    <div v-if="hoveredIndex !== null" class="tooltip" :style="tooltipStyle">
+      {{ items[hoveredIndex] }}
+    </div>
   </div>
 </template>
 
@@ -55,6 +64,7 @@ import { ref, computed, watch } from 'vue'
 const inputText = ref('選項一\n選項二\n選項三\n選項四\n選項五')
 const rotation = ref(0)
 const isSpinning = ref(false)
+const hoveredIndex = ref(null)
 
 const items = computed(() => {
   return inputText.value
@@ -106,6 +116,24 @@ const getTextY = (index) => {
 const getTextRotation = (index) => {
   const angle = 360 / items.value.length
   return angle * index + angle / 2
+}
+
+const tooltipStyle = computed(() => {
+  return {
+    position: 'fixed',
+    left: `${mousePosition.value.x + 10}px`,
+    top: `${mousePosition.value.y - 30}px`,
+    pointerEvents: 'none'
+  }
+})
+
+const mousePosition = ref({ x: 0, y: 0 })
+
+// Track mouse position
+if (typeof window !== 'undefined') {
+  window.addEventListener('mousemove', (e) => {
+    mousePosition.value = { x: e.clientX, y: e.clientY }
+  })
 }
 
 const spin = () => {
@@ -204,5 +232,17 @@ button:disabled {
   color: #ff6b6b;
   font-size: 14px;
   margin-top: 10px;
+}
+
+.tooltip {
+  background-color: rgba(0, 0, 0, 0.9);
+  color: white;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: bold;
+  z-index: 1000;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 </style>
